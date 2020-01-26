@@ -1,1 +1,169 @@
+---
+layout:     post
+title:      【ROS】ROS学习——概念理解
+subtitle:   解析ROS中一些难懂或容易混淆的概念
+date:       2020-01-25
+author:     Yunxuan
+header-img: img/post2-hd.jpg
+catalog: true
+tags: 
+    -ROS
+    -机器人
+---
 
+最近在学习ROS，分享下对重要概念的总结理解，欢迎感兴趣的童鞋一起交流讨论，有错误的地方欢迎指正。
+
+参考资料：[ROS Tutorials](http://wiki.ros.org/ROS/Tutorials/)
+
+@[TOC]
+# 1. Catkin Workspace
+Catkin workspace是管理和使用功能包的工作空间。Catkin工作空间包括**package.xml，CMakeList.txt**和**功能包**。其中package.xml文件提供有关软件包的元信息，CMakeList.txt文件是使用catkin的文件。
+
+Catkin workspace的大致结构如下：
+
+```bash
+workspace_folder/        -- WORKSPACE
+  build/
+  devel/
+  src/                   -- SOURCE SPACE
+    CMakeLists.txt       -- 'Toplevel' CMake file, provided by catkin
+    package_1/
+      CMakeLists.txt     -- CMakeLists.txt file for package_1
+      package.xml        -- Package manifest for package_1
+    ...
+    package_n/
+      CMakeLists.txt     -- CMakeLists.txt file for package_n
+      package.xml        -- Package manifest for package_n
+```
+其中build和devel文件夹是catkin_make命令后自动生成的文件夹，build文件夹是cmake和make配置和构建功能包的文件夹，devel文件夹储存可执行文件和库。
+
+# 2. ROS节点（ROS Nodes）
+一个可执行文件就是一个ROS节点，节点间通过ROS进行通讯。
+
+# 3. ROS 话题 （ROS Topic）& Publisher    Subscriber
+**ROS Topic**：ROS话题是ROS节点间通讯的一种方式，ROS节点可以通过发布（publish）向话题发布消息，通过订阅（subscribe）话题收取信息。
+
+**Publisher**：向ROS Topic发送消息的节点。
+**Subscriber**：从ROS Topic订阅信息的节点。
+
+# 4. ROS 服务 （ROS Service）& Server Client
+**ROS Service**：ROS服务是ROS节点通讯的另一种方式，ROS服务允许节点发送请求（request）和接收响应（response）。
+
+**Server**：服务器，随时准备处理Client节点的请求。
+**Client**：客户，向服务器发送请求并接收响应。
+
+# 5. ROS Topic和ROS Service的区别
+1.节点不同：Topic的使用节点是Publisher和Subscriber，Services的使用节点是Client。
+2.通讯方式不同：Topic由Publisher发布消息和由Subscriber接收消息（由publisher发起），而Services是Client向Server发送请求并接收响应。可以理解为Topic是同步的而Services是异步的
+
+# 6. package.xml内容解析
+
+ - **Build Tool Dependencies**：指定此程序包自行构建所需的构建系统工具。
+```yaml
+<buildtool_depend>catkin</buildtool_depend>
+```
+
+- **Build Dependencies**：指定构建此程序包所需程序包。
+```yaml
+<build_depend>message_generation</build_depend>
+```
+
+- **Run Dependencies**：指定程序包中代码所需程序包或该程序包构件库所需的程序包。
+```yaml
+<run_depend>message_runtime</run_depend>
+```
+
+- **Test Dependencies** ：仅指定单元测试的其他依赖项。
+```yaml
+<test_depend>python-mock</test_depend>
+```
+例子：
+
+```yaml
+<?xml version="1.0"?>
+<package format="2">
+  <name>beginner_tutorials</name>
+  <version>0.1.0</version>
+  <description>The beginner_tutorials package</description>
+
+  <maintainer email="you@yourdomain.tld">Your Name</maintainer>
+  <license>BSD</license>
+  <url type="website">http://wiki.ros.org/beginner_tutorials</url>
+  <author email="you@yourdomain.tld">Jane Doe</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+</package>
+```
+
+# 7. CMakeList.txt内容解析
+- **find_package()**：指定创建project所需的CMake程序包
+
+```yaml
+find_package(catkin REQUIRED COMPONENTS nodelet)
+```
+
+- **catkin_package()**：向构建系统指定特定于catkin的信息，而构建系统又用于生成pkg-config和CMake文件。
+
+```yaml
+catkin_package(
+   INCLUDE_DIRS include
+   LIBRARIES ${PROJECT_NAME}
+   CATKIN_DEPENDS roscpp nodelet
+   DEPENDS eigen opencv)
+```
+- **add_executable()**：创建可执行文件
+
+```yaml
+##从src/listener.cpp源文件中创建可执行文件listener
+add_executable(listener src/listener.cpp)
+```
+- **add_dependencies()**：添加依赖
+
+```yaml
+add_dependencies(some_target ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+```
+
+- **target_link_libraries()**：指定可执行文件链接到的库。
+
+```yaml
+target_link_libraries（<executableTargetName>，<lib1>，<lib2>，... <libN>）
+```
+例子：
+
+```yaml
+cmake_minimum_required(VERSION 2.8.3)
+project(beginner_tutorials)
+
+## Find catkin and any catkin packages
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg)
+
+## Declare ROS messages and services
+add_message_files(FILES Num.msg)
+add_service_files(FILES AddTwoInts.srv)
+
+## Generate added messages and services
+generate_messages(DEPENDENCIES std_msgs)
+
+## Declare a catkin package
+catkin_package()
+
+## Build talker and listener
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(talker src/talker.cpp)
+target_link_libraries(talker ${catkin_LIBRARIES})
+add_dependencies(talker beginner_tutorials_generate_messages_cpp)
+
+add_executable(listener src/listener.cpp)
+target_link_libraries(listener ${catkin_LIBRARIES})
+add_dependencies(listener beginner_tutorials_generate_messages_cpp)
+```
