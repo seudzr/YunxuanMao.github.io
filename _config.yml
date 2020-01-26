@@ -97,14 +97,14 @@ service-worker: true
 
 
 # Friends
-friends: [
-    {
-        title: "Github",
-        href: "http://https://github.com/YunxuanMao"
-    },{
-        title: "CSDN",
-        href: "https://https://me.csdn.net/HIT_Kyrie"
-    }
-]
+#friends: [
+#    {
+#        title: "Github",
+#        href: "http://https://github.com/YunxuanMao"
+#    },{
+#        title: "CSDN",
+#        href: "https://https://me.csdn.net/HIT_Kyrie"
+#    }
+#]
 
 theme: jekyll-theme-minimal
