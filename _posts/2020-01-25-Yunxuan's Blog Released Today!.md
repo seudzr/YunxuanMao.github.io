@@ -5,7 +5,7 @@ subtitle:   今天我终于开通了自己的博客
 date:       2020-01-25
 author:     Yunxuan
 header-img: img/post1-hd.jpg
-catalog: true
+catalog: false
 tags:
 ---
 
