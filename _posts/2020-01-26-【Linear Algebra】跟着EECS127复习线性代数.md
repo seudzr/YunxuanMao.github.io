@@ -7,7 +7,7 @@ author:     Yunxuan
 header-img: img/post3-hd.jpg
 catalog: true
 tags: 
-    Linear Algebra
+    Linear_Algebra
 ---
 
 这是一个慢更博客，我会跟着EECS127的进度慢慢更新。
