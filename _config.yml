@@ -97,7 +97,7 @@ service-worker: true
 
 
 # Friends
-friends: [
+My sites: [
     {
         title: "Github",
         href: "http://https://github.com/YunxuanMao"
