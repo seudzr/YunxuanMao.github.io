@@ -20,9 +20,9 @@ The axioms must hold for all vectors **u**, **v**, and **w** in V and for all sc
 
 1.The sum of **u** and **v**, denoted by **u** + **v**, is in V.
 
-2.http://chart.googleapis.com/chart?cht=tx&chl=\Large **u**+**v**=**v**+**u**.
+2.**u**+**v**=**v**+**u**.
 
-3.http://chart.googleapis.com/chart?cht=tx&chl=\Large (**u**+**v**)+**w**=**u**+**v**+(**w**).
+3.(**u**+**v**)+**w**=**u**+**v**+(**w**).
 
 4.There is a **zero** vector **0** in V such that **u**+0=**u**.
 
