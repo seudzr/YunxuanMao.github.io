@@ -10,12 +10,12 @@ tags:
     Linear_Algebra
 ---
 Today, we are going talk about Vector Space and Rank 
-# Vector Spaces
-## Vector spaces
-### Definition
+# 1 Vector Spaces
+## 1.1 Vector spaces
+### 1.1.1 Definition
 From a slightly more abstract perspective, a vector space, X, is obtained by equipping vectors with the operations of addition and multiplication by a scalar. A simple example of a vector space is X = Rn, the space of n-tuples of real numbers. A less obvious example is the set of single-variable polynomials of a given degree.
 
-### Axiom
+### 1.1.1 Axiom
 The axioms must hold for all vectors **u**, **v**, and **w** in V and for all scalars c and d.
 
 1.The sum of **u** and **v**, denoted by **u** + **v**, is in V.
@@ -39,5 +39,8 @@ The axioms must hold for all vectors **u**, **v**, and **w** in V and for all sc
 10.1**u**=**u**.
 
 
-### Formation of Vector Space
-1.
+### 1.1.2 Formation of Vector Space
+Use n linearly independent vectors to span a **Vector Space**.
+
+## 1.2 Subspaces
+
